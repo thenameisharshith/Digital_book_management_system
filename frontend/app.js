@@ -1,0 +1,1 @@
+async function loadBooks(){const r=await fetch('http://localhost:8080/api/books');const data=await r.json();document.getElementById('books').textContent=JSON.stringify(data,null,2);}
