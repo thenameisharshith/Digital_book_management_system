@@ -1,9 +1,3 @@
 package com.harshith.book.service;
 import com.harshith.book.entity.Book; import com.harshith.book.exception.*; import com.harshith.book.repository.BookRepository; import org.springframework.stereotype.Service; import java.util.*;
-@Service public class BookService{
- private final BookRepository repo; public BookService(BookRepository repo){this.repo=repo;}
- public List<Book> all(){return repo.findAll();} public Book get(Long id){return repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Book not found: "+id));}
- public Book create(Book b){b.setAvailableQuantity(b.getQuantity());return repo.save(b);}
- public Book update(Long id,Book b){Book x=get(id);int issued=x.getQuantity()-x.getAvailableQuantity();if(b.getQuantity()<issued)throw new BusinessException("Quantity cannot be less than issued books");x.setTitle(b.getTitle());x.setAuthor(b.getAuthor());x.setCategory(b.getCategory());x.setQuantity(b.getQuantity());x.setAvailableQuantity(b.getQuantity()-issued);return repo.save(x);}
- public void delete(Long id){repo.delete(get(id));}
-}
+@Service public class BookService{private final BookRepository repo;public BookService(BookRepository r){repo=r;}public List<Book> all(){return repo.findAll();}public Book get(Long id){return repo.findById(id).orElseThrow(()->new ResourceNotFoundException("Book not found: "+id));}public Book create(Book b){b.setAvailableQuantity(b.getQuantity());return repo.save(b);}public Book update(Long id,Book b){Book x=get(id);int issued=x.getQuantity()-x.getAvailableQuantity();if(b.getQuantity()<issued)throw new BusinessException("Quantity cannot be less than issued books");x.setTitle(b.getTitle());x.setAuthor(b.getAuthor());x.setCategory(b.getCategory());x.setQuantity(b.getQuantity());x.setAvailableQuantity(b.getQuantity()-issued);return repo.save(x);}public void delete(Long id){repo.delete(get(id));}}
